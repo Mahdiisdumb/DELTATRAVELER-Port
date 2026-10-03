@@ -3,25 +3,22 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
 
     <title>Unity WebGL Player | DELTATRAVELER</title>
 
     <style>
         html, body {
-            width: 100%;
-            height: 100%;
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
             background: #000;
         }
 
         #unity-canvas {
-            width: 100%;
-            height: 100%;
             background: #000;
-            display: block;
         }
     </style>
 </head>
@@ -31,7 +28,8 @@
     <canvas
         id="unity-canvas"
         width="640"
-        height="480">
+        height="480"
+        style="width: 640px; height: 480px; background: #000;">
     </canvas>
 
     <script src="Build/DELTATRAVELER.loader.js"></script>
@@ -59,20 +57,28 @@
 
             const dataUrl = URL.createObjectURL(blob);
 
-            createUnityInstance(
-                document.querySelector("#unity-canvas"),
-                {
-                    dataUrl: dataUrl,
-                    frameworkUrl:
-                        "Build/DELTATRAVELER.framework.js.unityweb",
-                    codeUrl:
-                        "Build/DELTATRAVELER.wasm.unityweb",
-                    streamingAssetsUrl: "StreamingAssets",
-                    companyName: "RynoGG",
-                    productName: "DELTATRAVELER",
-                    productVersion: "3.0.13.0114"
-                }
-            );
+            const canvas = document.querySelector("#unity-canvas");
+
+            createUnityInstance(canvas, {
+                dataUrl: dataUrl,
+                frameworkUrl:
+                    "Build/DELTATRAVELER.framework.js.unityweb",
+                codeUrl:
+                    "Build/DELTATRAVELER.wasm.unityweb",
+                streamingAssetsUrl: "StreamingAssets",
+                companyName: "RynoGG",
+                productName: "DELTATRAVELER",
+                productVersion: "3.0.13.0114"
+            }).then(function(instance) {
+
+                // Unity has initialized successfully.
+                // Only now change the displayed canvas size.
+                canvas.style.width = "100vw";
+                canvas.style.height = "100vh";
+                canvas.style.position = "fixed";
+                canvas.style.left = "0";
+                canvas.style.top = "0";
+            });
         }
 
         loadGame().catch(console.error);
